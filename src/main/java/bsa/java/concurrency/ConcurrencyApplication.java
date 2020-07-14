@@ -1,8 +1,14 @@
 package bsa.java.concurrency;
 
+import bsa.java.concurrency.image.Image;
+import bsa.java.concurrency.image.ImageRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import java.util.UUID;
 
 /*
 * Привет, внимательный читатель задания домашки :). Я - мини-гайд, который подскажет тебе как стоит подходить к решению домашки.
@@ -38,5 +44,12 @@ public class ConcurrencyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ConcurrencyApplication.class, args);
 	}
+
+//	@Bean
+//	CommandLineRunner initDb(ImageRepository imageRepository) {
+//		return args -> {
+//			imageRepository.save(new Image(UUID.randomUUID(), "This is url", 0L));
+//		};
+//	}
 
 }
