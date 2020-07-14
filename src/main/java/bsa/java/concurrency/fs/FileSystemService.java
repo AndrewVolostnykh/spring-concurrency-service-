@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class FileSystemService implements FileSystem {
 
-    private static final String path = "D:\\Developing\\git_reposes\\bsa-java-concurrency-template\\src\\main\\java\\bsa\\istore\\";
+    private static final String path = "D:\\Developing\\git_reposes\\bsa-java-concurrency-template\\src\\images\\";
 
     @Override
     public CompletableFuture<String> saveFile(String path, byte[] file) {
@@ -17,4 +17,5 @@ public class FileSystemService implements FileSystem {
     public static String getPath() {
         return path;
     }
+
 }

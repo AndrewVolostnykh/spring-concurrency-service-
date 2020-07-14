@@ -13,13 +13,13 @@ import java.util.UUID;
 @Builder
 public class SearchResultDtoImpl implements SearchResultDTO {
 
-    private UUID id;
-    private String url;
+    private UUID imageId;
+    private String imageUrl;
     private Double matchPercent;
 
     @Override
     public UUID getImageId() {
-        return this.id;
+        return this.imageId;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SearchResultDtoImpl implements SearchResultDTO {
 
     @Override
     public String getImageUrl() {
-        return this.url;
+        return this.imageUrl;
     }
 
 }

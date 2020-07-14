@@ -29,17 +29,20 @@ public class ImageController {
     @PostMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<SearchResultDTO> searchMatches(@RequestParam("image") MultipartFile file, @RequestParam(value = "threshold", defaultValue = "0.9") double threshold) {
-        return null;
+        return fileService.searchOfCoincidence(file, threshold);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@PathVariable("id") UUID imageId) {
-
+        fileService.deleteFromFileSystem(imageId); // re-write using concurrency
+        imageRepository.deleteById(imageId); // this works !
     }
 
     @DeleteMapping("/purge")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void purgeImages(){
+        fileService.deleteAllFiles(); // re-write using concurrency
+        imageRepository.deleteAll();
     }
 }
