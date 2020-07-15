@@ -1,11 +1,13 @@
 package bsa.java.concurrency.image;
 
+import org.springframework.stereotype.Service;
+
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
-
+@Service
 public class DHasher {
     public long calculateHash(byte[] image) {
         try {
@@ -40,19 +42,5 @@ public class DHasher {
         }
 
         return hash;
-    }
-
-    public static double matchPercent(long hash1, long hash2) { // this have to be in DB
-        long hashesXor = hash1 ^ hash2;
-        int numberOfOne = 0;
-        for(; hashesXor != 0; numberOfOne++) {
-            hashesXor &= (hashesXor - 1);
-        }
-
-        var result = numberOfOne / 64d;
-        System.out.println("ones: " + numberOfOne);
-        System.out.println("result: " + (1d - result));
-
-        return 1 - result;
     }
 }

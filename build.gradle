@@ -32,3 +32,9 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/spring-concurrency'
+	user = 'postgres'
+	password = '1679438520'
+}

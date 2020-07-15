@@ -45,11 +45,4 @@ public class ConcurrencyApplication {
 		SpringApplication.run(ConcurrencyApplication.class, args);
 	}
 
-//	@Bean
-//	CommandLineRunner initDb(ImageRepository imageRepository) {
-//		return args -> {
-//			imageRepository.save(new Image(UUID.randomUUID(), "This is url", 0L));
-//		};
-//	}
-
 }

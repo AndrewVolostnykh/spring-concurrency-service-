@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/image")
@@ -19,30 +22,34 @@ public class ImageController {
     ImageRepository imageRepository;
     @Autowired
     NotAsyncExecutor fileService;
+    @Autowired
+    DHasher hasher;
+    @Autowired
+    ImageService imageService;
 
     @PostMapping("/batch")
     @ResponseStatus(HttpStatus.CREATED)
-    public void batchUploadImages(@RequestParam("images") MultipartFile[] files) {
-        fileService.saveImages(files); // this will call an imitation of concurrent work
+    public CompletableFuture<Void> batchUploadImages(@RequestParam("images") MultipartFile[] files) {
+        return imageService.saveImages(files);
     }
 
     @PostMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<SearchResultDTO> searchMatches(@RequestParam("image") MultipartFile file, @RequestParam(value = "threshold", defaultValue = "0.9") double threshold) {
-        return fileService.searchOfCoincidence(file, threshold);
+        //fileService.searchOfCoincidence(file, threshold);
+        return imageRepository.getSearchResult(hasher.calculateHash(fileService.getBytes(file)), threshold);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@PathVariable("id") UUID imageId) {
-        fileService.deleteFromFileSystem(imageId); // re-write using concurrency
-        imageRepository.deleteById(imageId); // this works !
+        fileService.deleteFromFileSystem(imageId); // some of shit code
+        imageRepository.deleteById(imageId);
     }
 
     @DeleteMapping("/purge")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void purgeImages(){
-        fileService.deleteAllFiles(); // re-write using concurrency
-        imageRepository.deleteAll();
+        imageService.purgeFiles();
     }
 }

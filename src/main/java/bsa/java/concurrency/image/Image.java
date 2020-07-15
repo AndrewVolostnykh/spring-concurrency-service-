@@ -20,10 +20,10 @@ public class Image {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
-    UUID id;
+    private UUID id;
 
-    String url;
+    private String url;
 
-    Long hash;
+    private Long hash;
 
 }
