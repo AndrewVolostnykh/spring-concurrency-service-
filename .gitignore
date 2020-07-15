@@ -33,6 +33,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### static folders
-/images/
-/main/java/bsa/istore/**
+### static folders ###
+
+**/src/images/**

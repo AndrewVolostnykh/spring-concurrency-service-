@@ -2,12 +2,13 @@ package bsa.java.concurrency.image;
 
 import bsa.java.concurrency.fs.FileSystem;
 import bsa.java.concurrency.fs.FileSystemService;
+import bsa.java.concurrency.image.dto.SearchResultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,8 +37,19 @@ public class ImageService {
         return CompletableFuture.allOf(promises);
     }
 
-    public void searchFile(MultipartFile file) {
+    public List<SearchResultDTO> searchFile(MultipartFile file, double threshold) {
 
+        var hash = hasher.calculateHash(FileSystemService.getBytes(file));
+        var responseFromDb = imageRepository.getSearchResult(hash, threshold);
+
+        if(responseFromDb.size() == 0) {
+            CompletableFuture.supplyAsync(() -> {
+                var future = fileSystem.saveImage(file);
+                future.thenAccept(result -> imageRepository.save(new Image(UUID.randomUUID(), result, hash)));
+                return future;
+            });
+        }
+        return responseFromDb;
     }
 
     public void purgeFiles() {
@@ -45,5 +57,9 @@ public class ImageService {
         imageRepository.deleteAll();
     }
 
+    public void deleteById(UUID imageId) {
+        fileSystem.deleteFileById(imageId);
+        imageRepository.deleteById(imageId);
+    }
 
 }

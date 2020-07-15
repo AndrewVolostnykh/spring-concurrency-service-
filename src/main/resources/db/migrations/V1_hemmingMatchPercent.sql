@@ -1,14 +1,12 @@
 create or replace function hemmingMatchPercent(IN hash1 bigint, IN hash2 bigint)
 returns real as $$
     declare
-        local_hash1 bigint := hash1;
-        local_hash2 bigint := hash2;
-        hashesXor bigint := local_hash1 # local_hash2;
-        numberOfOne int := 0;
+        hashesXor bigint := hash1 # hash2;
+        numberOfOne bigint := 0;
         resultVar real := 0.0;
     begin
-        if hashesXor < 0 then
-            hashesXor := hashesXor * (-1);
+        if (hashesXor < 0) then
+            hashesXor := ~hashesXor;
         end if;
 
         while(hashesXor > 0)

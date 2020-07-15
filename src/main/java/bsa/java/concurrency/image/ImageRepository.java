@@ -14,9 +14,9 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
     Image findOneById(UUID id);
 
     @Query(value = "select cast(id as varchar(255)) as imageId, " +
-                            "hemmMatchPercent(hash, :hash) * 100 as matchPercent, " +
+                            "hemmingMatchPercent(hash, :hash) * 100 as matchPercent, " +
                             "url as imageUrl " +
                     " from images" +
-                    " where hemmMatchPercent(hash, :hash) >= :threshold", nativeQuery = true)
+                    " where hemmingMatchPercent(hash, :hash) >= :threshold", nativeQuery = true)
     List<SearchResultDTO> getSearchResult(@Param("hash") long hash, @Param("threshold") double threshold);
 }

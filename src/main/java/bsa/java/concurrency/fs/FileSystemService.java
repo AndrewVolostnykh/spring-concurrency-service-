@@ -19,8 +19,12 @@ import java.util.concurrent.Executors;
 @Service
 public class FileSystemService implements FileSystem {
 
+    private ImageRepository imageRepository;
+
     @Autowired
-    ImageRepository imageRepository;
+    public FileSystemService(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
 
     private final ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
@@ -32,7 +36,7 @@ public class FileSystemService implements FileSystem {
         return CompletableFuture.supplyAsync(() -> saveFile(file), threadPool);
     }
 
-    public String saveFile(MultipartFile file) {
+    private String saveFile(MultipartFile file) {
 
         String filePath = null;
 
