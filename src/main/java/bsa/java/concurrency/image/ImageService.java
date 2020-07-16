@@ -15,13 +15,13 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class ImageService {
     private ImageRepository imageRepository;
-    private DHasher hasher;
+    private HorizontalDHash hasher;
     private FileSystem fileSystem;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository, DHasher hasher, FileSystem fileSystem) {
+    public ImageService(ImageRepository imageRepository, HorizontalDHash hashCalculator, FileSystem fileSystem) {
         this.imageRepository = imageRepository;
-        this.hasher = hasher;
+        this.hasher = hashCalculator;
         this.fileSystem = fileSystem;
     }
 
